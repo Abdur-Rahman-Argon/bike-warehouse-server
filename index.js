@@ -45,13 +45,6 @@ async function run() {
       const result = await itemsCollection.insertOne(newItem);
       res.send(result);
     });
-    // mongo remove data
-    app.delete("/productItem/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: ObjectId(id) };
-      const result = await itemsCollection.deleteOne(query);
-      res.send(result);
-    });
   } finally {
     //await client.close();
   }
