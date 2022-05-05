@@ -1,1 +1,18 @@
 node_modules
+.env
+
+async function run() {
+  try {
+    await client.connect();
+    const collection = client.db("test").collection("devices");
+  } finally {
+    //await client.close();
+  }
+}
+run().catch(console.dir);
+
+
+ const query = {};
+      const cursor = itemsCollection.find(query);
+      const productItems = await cursor.toArray();
+      console.log(productItems);
