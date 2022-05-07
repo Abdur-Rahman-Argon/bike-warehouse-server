@@ -27,6 +27,7 @@ async function run() {
     const query = {};
     const cursor = itemsCollection.find(query);
     const productItems = await cursor.toArray();
+
     // mongo get data api
     app.get("/productItems", (req, res) => {
       res.send(productItems);
@@ -45,6 +46,35 @@ async function run() {
       const result = await itemsCollection.insertOne(newItem);
       res.send(result);
     });
+
+    // load multiple user data
+    app.get("/singleUserData", async (req, res) => {
+      const email = req.query.email;
+      const query = { email };
+      const cursor = itemsCollection.find(query);
+      const productItems = await cursor.toArray();
+      res.send(productItems);
+    });
+
+    // update productItem
+    app.put("/productItem/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateItms = req.body;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          stock: updateItms.stock,
+        },
+      };
+      const result = await itemsCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      res.send(result);
+    });
+
     // mongo remove data
     app.delete("/productItem/:id", async (req, res) => {
       const id = req.params.id;
@@ -58,6 +88,7 @@ async function run() {
 }
 run().catch(console.dir);
 
+//get api
 app.get("/", (req, res) => {
   res.send("product");
 });
