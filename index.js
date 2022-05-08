@@ -26,24 +26,27 @@ async function run() {
     const itemsCollection = client
       .db("databaseAssainment11")
       .collection("productItems");
-    const query = {};
-    const cursor = itemsCollection.find(query);
-    const productItems = await cursor.toArray();
 
     // mongo get data api
-    app.get("/productItems", (req, res) => {
+    app.get("/productItems", async (req, res) => {
+      const query = {};
+      const cursor = itemsCollection.find(query);
+      const productItems = await cursor.toArray();
       res.send(productItems);
     });
 
     // single data api
-    app.get("/productItem/:id", (req, res) => {
+    app.get("/productItem/:id", async (req, res) => {
       const id = req.params.id;
+      const query = {};
+      const cursor = itemsCollection.find(query);
+      const productItems = await cursor.toArray();
       const productItem = productItems.find((product) => product._id == id);
       res.send(productItem);
     });
-    ///asscess toan
+
     //Auth
-    app.post("/login", async (req, res) => {
+    app.post("/jwtToken", async (req, res) => {
       const user = req.body;
       const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: "1d",
