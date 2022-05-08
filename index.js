@@ -101,7 +101,7 @@ run().catch(console.dir);
 
 //get api
 app.get("/", (req, res) => {
-  res.send("Running our database assainment server : warehouse");
+  res.send("Running our database vh assainment server : warehouse");
 });
 
 //port runing
