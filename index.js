@@ -106,5 +106,5 @@ app.get("/", (req, res) => {
 
 //port runing
 app.listen(port, () => {
-  console.log("server connect port", port);
+  console.log("server connected port", port);
 });
