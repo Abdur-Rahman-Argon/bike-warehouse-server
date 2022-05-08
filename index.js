@@ -1,6 +1,7 @@
 const express = require("express");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -39,6 +40,15 @@ async function run() {
       const productItem = productItems.find((product) => product._id == id);
       res.send(productItem);
     });
+    ///asscess toan
+    //Auth
+    app.post("/login", async (req, res) => {
+      const user = req.body;
+      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: "1d",
+      });
+      res.send({ accessToken });
+    });
 
     // mongo post data
     app.post("/productItems", async (req, res) => {
@@ -65,6 +75,7 @@ async function run() {
       const updateDoc = {
         $set: {
           stock: updateItms.stock,
+          delivery: updateItms.delivery,
         },
       };
       const result = await itemsCollection.updateOne(
@@ -90,7 +101,7 @@ run().catch(console.dir);
 
 //get api
 app.get("/", (req, res) => {
-  res.send("product");
+  res.send("Running our database assainment server : warehouse");
 });
 
 //port runing
